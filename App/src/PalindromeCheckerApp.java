@@ -1,62 +1,73 @@
 /**
- * MAIN CLASS - UseCase11PalindromeCheckerApp
+ * MAIN CLASS - UseCase12PalindromeCheckerApp
  * ==========================================
- * Use Case 11: Object-Oriented Palindrome Service
+ * Use Case 12: Strategy Pattern for Palindrome Algorithms
  * * Description:
- * This class demonstrates palindrome validation using object-oriented design.
- * The palindrome logic is encapsulated inside a PalindromeService class.
- * This approach promotes Reusability and Separation of concerns.
- *
- * @author Gauthar Developer
- * @version 11.0
+ * This class demonstrates how different palindrome
+ * validation algorithms can be selected dynamically
+ * at runtime using the Strategy Design Pattern.
+ * * @version 12.0
  */
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point for UC11.
-     * * @param args Command-line arguments
-     */
     public static void main(String[] args) {
-        String input = "racecar";
+        String input = "Level"; //
+        // Normalizing for case-insensitivity to pass the "Level" test
+        String normalizedInput = input.toLowerCase();
 
-        // Instantiate the service class
-        PalindromeService service = new PalindromeService();
+        // Inject the strategy at runtime [cite: 91]
+        PalindromeStrategy strategy = new StackStrategy();
 
-        // Call the encapsulated method
-        boolean isPalindrome = service.checkPalindrome(input);
+        // Execute the selected algorithm [cite: 108]
+        boolean isPalindrome = strategy.check(normalizedInput);
 
-        // Output the result
-        System.out.println("Input: " + input);
-        System.out.println("Is Palindrome?: " + isPalindrome);
+        System.out.println("Input: " + input); //
+        System.out.println("Is Palindrome?: " + isPalindrome); //
     }
 }
 
 /**
- * Service class that contains palindrome logic.
+ * INTERFACE - PalindromeStrategy
+ * ------------------------------
+ * This interface defines a contract for all palindrome checking algorithms.
+ * Any new algorithm must implement this interface and provide its own validation logic.
  */
-class PalindromeService {
-
+interface PalindromeStrategy { // [cite: 119]
     /**
-     * Checks whether the input string is a palindrome.
-     * * @param input Input string
+     * @param input string to validate
      * @return true if palindrome, false otherwise
      */
-    public boolean checkPalindrome(String input) {
-        // Initialize pointers
-        int start = 0;
-        int end = input.length() - 1;
+    boolean check(String input); // [cite: 130]
+}
 
-        // Loop until the pointers meet in the middle
-        while (start < end) {
-            // Compare characters at the start and end pointers
-            if (input.charAt(start) != input.charAt(end)) {
-                return false; // Mismatch found, not a palindrome
-            }
-            // Move pointers inward
-            start++;
-            end--;
+/**
+ * CLASS - StackStrategy
+ * ---------------------
+ * This class provides a Stack-based implementation of the PalindromeStrategy interface.
+ * It uses LIFO behavior to reverse characters and compare them with the original sequence.
+ */
+class StackStrategy implements PalindromeStrategy { // [cite: 126]
+
+    /**
+     * Implements palindrome validation using Stack.
+     */
+    public boolean check(String input) { // [cite: 131]
+
+        // Create a stack to store characters.
+        java.util.Stack<Character> stack = new java.util.Stack<>(); // [cite: 133]
+
+        // Push each character of the input string onto the stack
+        for (char c : input.toCharArray()) { // [cite: 135]
+            stack.push(c);
         }
 
-        return true; // All symmetric characters matched
+        // Compare characters by popping from the stack.
+        for (char c : input.toCharArray()) { // [cite: 137]
+            if (c != stack.pop()) {
+                return false; // Mismatch found
+            }
+        }
+
+        return true; // All characters matched
     }
 }

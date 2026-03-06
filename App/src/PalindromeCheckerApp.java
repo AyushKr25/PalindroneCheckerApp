@@ -1,20 +1,14 @@
 /**
- * MAIN CLASS - UseCase13PalindromeCheckerApp
- * ==========================================
- * Use Case 13: Performance Comparison
- * * Description:
- * This class measures and compares the execution
- * performance of palindrome validation algorithms[cite: 156].
- * * At this stage, the application:
- * - Uses a palindrome strategy implementation [cite: 158]
- * - Captures execution start and end time [cite: 159]
- * - Calculates execution duration
- * - Displays benchmarking results [cite: 161]
- * * This use case focuses purely on performance
- * measurement and algorithm comparison[cite: 162, 163].
- * The goal is to introduce benchmarking concepts[cite: 164].
- * * @author Gauthar Developer [cite: 165]
- * @version 13.0
+ * Use Case 10 Normalized Palindrome Validation
+ * Description: This class validates a palindrome after preprocessing the input string.
+ * Normalization includes:
+ * - Removing spaces and symbols
+ * - Converting to lowercase
+ * This ensures the palindrome check is logical rather than character-format dependent.
+ * Example: A man a plan a canal Panama
+ *
+ * @author Gauthar Developer
+ * @version 10.0
  */
 public class PalindromeCheckerApp {
 
@@ -23,41 +17,26 @@ public class PalindromeCheckerApp {
      * @param args Command-Line arguments
      */
     public static void main(String[] args) {
-        String input = "Level";
-        // Quick normalization for this test
-        String normalizedInput = input.toLowerCase();
+        // Input string as per the example
+        String input = "A man a plan a canal Panama";
 
-        // 1. Capture execution start time
-        long startTime = System.nanoTime();
+        // Step 1: Normalize string (Remove spaces/symbols and convert to lowercase)
+        // Using regex to replace anything that is NOT a letter or a number
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // 2. Run the algorithm
-        boolean isPalindrome = checkPalindromeBasic(normalizedInput);
+        boolean isPalindrome = true;
 
-        // 3. Capture execution end time
-        long endTime = System.nanoTime();
+        // Step 2: Compare characters from both ends
+        for (int i = 0; i < normalized.length() / 2; i++) {
+            // Compare symmetric characters
+            if (normalized.charAt(i) != normalized.charAt(normalized.length() - 1 - i)) {
+                isPalindrome = false;
+                break; // Exit the loop early if a mismatch is found
+            }
+        }
 
-        // 4. Calculate execution duration
-        long duration = endTime - startTime;
-
-        // Display results
+        // Output the result
         System.out.println("Input: " + input);
         System.out.println("Is Palindrome?: " + isPalindrome);
-        System.out.println("Execution Time: " + duration + " ns");
-    }
-
-    /**
-     * Helper method to simulate a palindrome algorithm.
-     */
-    public static boolean checkPalindromeBasic(String str) {
-        int start = 0;
-        int end = str.length() - 1;
-        while (start < end) {
-            if (str.charAt(start) != str.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
-        }
-        return true;
     }
 }

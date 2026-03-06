@@ -1,73 +1,63 @@
 /**
- * MAIN CLASS - UseCase12PalindromeCheckerApp
+ * MAIN CLASS - UseCase13PalindromeCheckerApp
  * ==========================================
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  * * Description:
- * This class demonstrates how different palindrome
- * validation algorithms can be selected dynamically
- * at runtime using the Strategy Design Pattern.
- * * @version 12.0
+ * This class measures and compares the execution
+ * performance of palindrome validation algorithms[cite: 156].
+ * * At this stage, the application:
+ * - Uses a palindrome strategy implementation [cite: 158]
+ * - Captures execution start and end time [cite: 159]
+ * - Calculates execution duration
+ * - Displays benchmarking results [cite: 161]
+ * * This use case focuses purely on performance
+ * measurement and algorithm comparison[cite: 162, 163].
+ * The goal is to introduce benchmarking concepts[cite: 164].
+ * * @author Gauthar Developer [cite: 165]
+ * @version 13.0
  */
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     * @param args Command-Line arguments
+     */
     public static void main(String[] args) {
-        String input = "Level"; //
-        // Normalizing for case-insensitivity to pass the "Level" test
+        String input = "Level";
+        // Quick normalization for this test
         String normalizedInput = input.toLowerCase();
 
-        // Inject the strategy at runtime [cite: 91]
-        PalindromeStrategy strategy = new StackStrategy();
+        // 1. Capture execution start time
+        long startTime = System.nanoTime();
 
-        // Execute the selected algorithm [cite: 108]
-        boolean isPalindrome = strategy.check(normalizedInput);
+        // 2. Run the algorithm
+        boolean isPalindrome = checkPalindromeBasic(normalizedInput);
 
-        System.out.println("Input: " + input); //
-        System.out.println("Is Palindrome?: " + isPalindrome); //
+        // 3. Capture execution end time
+        long endTime = System.nanoTime();
+
+        // 4. Calculate execution duration
+        long duration = endTime - startTime;
+
+        // Display results
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome?: " + isPalindrome);
+        System.out.println("Execution Time: " + duration + " ns");
     }
-}
-
-/**
- * INTERFACE - PalindromeStrategy
- * ------------------------------
- * This interface defines a contract for all palindrome checking algorithms.
- * Any new algorithm must implement this interface and provide its own validation logic.
- */
-interface PalindromeStrategy { // [cite: 119]
-    /**
-     * @param input string to validate
-     * @return true if palindrome, false otherwise
-     */
-    boolean check(String input); // [cite: 130]
-}
-
-/**
- * CLASS - StackStrategy
- * ---------------------
- * This class provides a Stack-based implementation of the PalindromeStrategy interface.
- * It uses LIFO behavior to reverse characters and compare them with the original sequence.
- */
-class StackStrategy implements PalindromeStrategy { // [cite: 126]
 
     /**
-     * Implements palindrome validation using Stack.
+     * Helper method to simulate a palindrome algorithm.
      */
-    public boolean check(String input) { // [cite: 131]
-
-        // Create a stack to store characters.
-        java.util.Stack<Character> stack = new java.util.Stack<>(); // [cite: 133]
-
-        // Push each character of the input string onto the stack
-        for (char c : input.toCharArray()) { // [cite: 135]
-            stack.push(c);
-        }
-
-        // Compare characters by popping from the stack.
-        for (char c : input.toCharArray()) { // [cite: 137]
-            if (c != stack.pop()) {
-                return false; // Mismatch found
+    public static boolean checkPalindromeBasic(String str) {
+        int start = 0;
+        int end = str.length() - 1;
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
             }
+            start++;
+            end--;
         }
-
-        return true; // All characters matched
+        return true;
     }
 }
